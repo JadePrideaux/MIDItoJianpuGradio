@@ -14,3 +14,11 @@ def midi_note_to_jianpu(note: int) -> str:
     degree = degree + "·" * (-octave)
 
   return degree
+
+def transpose(value: int, offset: int) -> int:
+  '''Given a MIDI value, transpose it by the given number of semitones and return the resulting value.'''
+  return value + offset
+
+def calculate_offset(semitones: int, octaves: int) -> int:
+  '''Calculate the offset in semitones by adding the octaves and semitone offsets.'''
+  return (octaves * 12) + semitones
