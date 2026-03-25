@@ -11,8 +11,7 @@ def midi_file_to_jianpu_str(file: _TemporaryFileWrapper, channel: int, semitone_
         midi = load_midi_file(file)
     except:
         return f"Error processing file, make sure to upload a MIDI file."
-    offset = calculate_offset(semitone_offset, octave_offset)
-    return midi_to_jianpu_str(midi, channel, offset)
+    return midi_to_jianpu_str(midi, channel, semitone_offset, octave_offset)
     
 
 interface = gr.Interface(
