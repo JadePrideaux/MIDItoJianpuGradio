@@ -18,6 +18,9 @@ def midi_file_to_jianpu_str(
         return f"Error processing file, make sure to upload a MIDI file."
     return midi_to_jianpu_str(midi, channel, semitone_offset, octave_offset, time_interval)
 
+def play_midi():
+    pass
+
 with gr.Blocks() as ui:
 
     with gr.Row():
@@ -53,6 +56,7 @@ with gr.Blocks() as ui:
 
         with gr.Column():
             output_text = gr.Textbox(label="Jianpu Output")
+            play_button = gr.Button("Play")
 
     run_button.click(
         fn=midi_file_to_jianpu_str,
@@ -64,6 +68,10 @@ with gr.Blocks() as ui:
             interval_slider
         ],
         outputs=output_text
+    )
+
+    play_button.click(
+        fn=play_midi
     )
 
 
