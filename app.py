@@ -1,6 +1,6 @@
 from code.logic import calculate_offset
 from code.midi import load_midi_file, midi_to_jianpu_str
-from code.new_midi import midi_to_audio
+from code.new_midi import get_new_midi
 from tempfile import _TemporaryFileWrapper
 
 import gradio as gr
@@ -34,7 +34,7 @@ def get_midi(state) -> tuple[str, str | None]:
         return f"Failed to load MIDI file: {e}", None
 
     try:
-        output_path = midi_to_audio(midi, channel, offset)
+        output_path = get_new_midi(midi, channel, offset)
     except Exception as e:
         return f"Failed to generate MIDI: {e}", None
 

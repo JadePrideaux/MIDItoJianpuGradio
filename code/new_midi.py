@@ -1,18 +1,17 @@
-import os
 import tempfile
 
 import mido
 
 
-def midi_to_audio(
+def get_new_midi(
   midi: mido.MidiFile,
   channel: int = 0,
   offset: int = 0
   ) -> str:
-  '''Converts the original midi file into a playable audio file based on the users settings.'''
-  # Create new MIDI file
+  '''Converts the original MIDI file into a new MIDI file with the selected channel and offset'''
   new_midi = generate_new_midi(midi, channel, offset)
   tmp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".mid")
+  tmp_file.close()
   new_midi.save(tmp_file.name)
   return tmp_file.name
 
