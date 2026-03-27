@@ -1,5 +1,6 @@
 from code.logic import calculate_offset
 from code.midi import load_midi_file, midi_to_jianpu_str
+from code.midi_play import midi_to_audio
 from tempfile import _TemporaryFileWrapper
 
 import gradio as gr
@@ -21,8 +22,23 @@ def midi_file_to_jianpu_str(
     result = midi_to_jianpu_str(midi, channel, offset, time_interval)
     return result, (file.name, channel, offset)
 
-def play_midi():
-    pass
+def get_midi(state) -> tuple[str, str | None]:
+    if state is None:
+        return "No data yet. Upload and Convert a MIDI file first", None
+
+    file_path, channel, offset = state
+
+    try:
+        midi = mido.MidiFile(file_path)
+    except Exception as e:
+        return f"Failed to load MIDI file: {e}", None
+
+    try:
+        output_path = midi_to_audio(midi, channel, offset)
+    except Exception as e:
+        return f"Failed to generate MIDI: {e}", None
+
+    return "MIDI generated successfully!", output_path
 
 with gr.Blocks() as ui:
     state = gr.State()
@@ -59,7 +75,9 @@ with gr.Blocks() as ui:
 
         with gr.Column():
             output_text = gr.Textbox(label="Jianpu Output")
-            play_button = gr.Button("Play")
+            download_button = gr.Button("Download MIDI")
+            midi_output = gr.File(label="Playable MIDI")
+            status_text = gr.Textbox(label="Status")
 
     run_button.click(
         fn=midi_file_to_jianpu_str,
@@ -73,8 +91,10 @@ with gr.Blocks() as ui:
         outputs=[output_text, state]
     )
 
-    play_button.click(
-        fn=play_midi
+    download_button.click(
+        fn=get_midi,
+        inputs=state,
+        outputs=[status_text, midi_output]
     )
 
 
