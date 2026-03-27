@@ -1,6 +1,6 @@
 from code.logic import calculate_offset
 from code.midi import load_midi_file, midi_to_jianpu_str
-from code.midi_play import midi_to_audio
+from code.new_midi import midi_to_audio
 from tempfile import _TemporaryFileWrapper
 
 import gradio as gr
