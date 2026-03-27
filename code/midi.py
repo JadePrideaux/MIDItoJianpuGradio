@@ -16,16 +16,13 @@ def check_channel(midi: mido.MidiFile, channel: int) -> bool:
 def midi_to_jianpu_str(
     midi: mido.MidiFile,
     channel: int = 0,
-    semitone_offset: int = 0,
-    octave_offset: int = 0,
+    offset: int = 0,
     time_interval: int = 64
   ) -> str:
   '''Get notes in jianpu notation as a string from a given channel in a MIDI file.'''
 
   if not check_channel(midi, channel):
     return f"Channel {channel} does not exist in this MIDI file."
-
-  offset = calculate_offset(semitone_offset, octave_offset)
 
   notes = extract_notes(midi, channel, offset, time_interval)
   return " ".join(notes)

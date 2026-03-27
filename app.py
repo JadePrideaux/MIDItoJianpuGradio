@@ -3,6 +3,7 @@ from code.midi import load_midi_file, midi_to_jianpu_str
 from tempfile import _TemporaryFileWrapper
 
 import gradio as gr
+import mido
 
 
 def midi_file_to_jianpu_str(
@@ -10,19 +11,21 @@ def midi_file_to_jianpu_str(
         channel: int, semitone_offset: int,
         octave_offset: int,
         time_interval: int
-    ) -> str:
+    ) -> tuple[str, tuple[str, int, int]]:
     '''Given a midi file, return the notes in jianpu notation'''
+    offset = calculate_offset(semitone_offset, octave_offset)
     try:
         midi = load_midi_file(file)
     except:
-        return f"Error processing file, make sure to upload a MIDI file."
-    return midi_to_jianpu_str(midi, channel, semitone_offset, octave_offset, time_interval)
+        return f"Error processing file, make sure to upload a MIDI file.", ("", channel, offset)
+    result = midi_to_jianpu_str(midi, channel, offset, time_interval)
+    return result, (file.name, channel, offset)
 
 def play_midi():
     pass
 
 with gr.Blocks() as ui:
-
+    state = gr.State()
     with gr.Row():
         with gr.Column():
             gr.Markdown("# MIDI to Jianpu")
@@ -67,7 +70,7 @@ with gr.Blocks() as ui:
             octave_slider,
             interval_slider
         ],
-        outputs=output_text
+        outputs=[output_text, state]
     )
 
     play_button.click(
