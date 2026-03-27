@@ -10,10 +10,10 @@ def get_new_midi(
   ) -> str:
   '''Converts the original MIDI file into a new MIDI file with the selected channel and offset'''
   new_midi = generate_new_midi(midi, channel, offset)
-  tmp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".mid")
-  tmp_file.close()
-  new_midi.save(tmp_file.name)
-  return tmp_file.name
+  with tempfile.NamedTemporaryFile(delete=False, suffix=".mid") as temp_file:
+    file_name = temp_file.name
+  new_midi.save(file_name)
+  return file_name
 
 def generate_new_midi(
   midi: mido.MidiFile,
