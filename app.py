@@ -46,7 +46,20 @@ with gr.Blocks() as ui:
         with gr.Column():
             gr.Markdown("# MIDI to Jianpu")
             gr.Markdown("## How to use:")
-            gr.Markdown("## Key:")
+            gr.Markdown("Upload a MIDI file then click convert to see it in Jianpu notation. " \
+                        "Select options to select the channel and alter the output. " \
+                        "Once converted you can download the edited MIDI file with just the selected track to check how the notes should sound.")
+            gr.Markdown("### Options:")
+            gr.Markdown("MIDI Channel - Select which channel to convert.")
+            gr.Markdown("Semitone Offset - Offset the song by a semitone")
+            gr.Markdown("Octave Offset - Offset the song by an octave")
+            gr.Markdown("Time Interval - Select how long the time breaks are in the output, although these are somewhat proportional the timing is not accurate.")
+            gr.Markdown("### Key:")
+            gr.Markdown("[X] - note")
+            gr.Markdown("[X----] - longer note")
+            gr.Markdown("[-----] - rest")
+            gr.Markdown("[.X] - octave above")
+            gr.Markdown("[X.] - octave below")
 
         with gr.Column():
             midi_input = gr.File(label="Upload MIDI file")
@@ -75,7 +88,7 @@ with gr.Blocks() as ui:
 
         with gr.Column():
             output_text = gr.Textbox(label="Jianpu Output")
-            download_button = gr.Button("Download MIDI")
+            download_button = gr.Button("Prepare MIDI for Download")
             midi_output = gr.File(label="Playable MIDI")
             status_text = gr.Textbox(label="Status")
 
