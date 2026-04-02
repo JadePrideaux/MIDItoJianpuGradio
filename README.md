@@ -39,12 +39,12 @@ Run tests with: `uv run python -m unittest discover -s test -p "*_test.py"`
 
 This project followed an agile goal based sprints with the following steps in each cycle.
 
-- Plan: Decide on the most important system requirements with the client and define the goal for the sprint.
-- Design: Decide how to build the system to meet these requirements.
-- Develop: Implement the systems to fulfil the given requirements.
-- Test: Simple manual testing to check features work as intended followed by some basic unit tests.
-- Deploy: Deploy to Hugging Face Spaces.
-- Review: User testing session, to check how well goals have been met and review the overall sprint.
+- **Plan:** Decide on the most important system requirements with the client and define the goal for the sprint.
+- **Design:** Decide how to build the system to meet these requirements.
+- **Develop:** Implement the systems to fulfil the given requirements.
+- **Test:** Simple manual testing to check features work as intended followed by some basic unit tests.
+- **Deploy:** Deploy to Hugging Face Spaces.
+- **Review:** User testing session, to check how well goals have been met and review the overall sprint.
 
 The user testing session is done after deployment since this is just a personal tool and it doesn't need to be perfect at that stage. This also helps with doing user testing remotely.
 
