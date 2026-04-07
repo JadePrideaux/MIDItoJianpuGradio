@@ -55,7 +55,7 @@ def wrap_value(note: str, time_space: str) -> str:
 
 def get_time_space(time: float, time_interval: int) -> str:
   time_string = ""
-  for i in range(floor(time * time_interval)):
+  for _ in range(floor(time * time_interval)):
     time_string += "-"
   return time_string
 
