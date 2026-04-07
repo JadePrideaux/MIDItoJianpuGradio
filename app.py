@@ -50,16 +50,16 @@ with gr.Blocks() as ui:
                         "Select options to select the channel and alter the output. " \
                         "Once converted you can download the edited MIDI file with just the selected track to check how the notes should sound.")
             gr.Markdown("### Options:")
-            gr.Markdown("MIDI Channel - Select which channel to convert.")
-            gr.Markdown("Semitone Offset - Offset the song by a semitone")
-            gr.Markdown("Octave Offset - Offset the song by an octave")
-            gr.Markdown("Time Interval - Select how long the time breaks are in the output, although these are somewhat proportional the timing is not accurate.")
+            gr.Markdown("**MIDI Channel** - Select which channel to convert.")
+            gr.Markdown("**Semitone Offset** - Offset the song by a semitone")
+            gr.Markdown("**Octave Offset** - Offset the song by an octave")
+            gr.Markdown("**Time Spacing** - Select how long the time breaks are in the output, these are calculated by the time in seconds multiplied by this value, floored.")
             gr.Markdown("### Key:")
-            gr.Markdown("[X] - note")
-            gr.Markdown("[X----] - longer note")
+            gr.Markdown("[n] - note")
+            gr.Markdown("[n|----] - longer note")
             gr.Markdown("[-----] - rest")
-            gr.Markdown("[.X] - octave above")
-            gr.Markdown("[X.] - octave below")
+            gr.Markdown("[·n] - octave above")
+            gr.Markdown("[n·] - octave below")
 
         with gr.Column():
             midi_input = gr.File(label="Upload MIDI file")
@@ -81,7 +81,7 @@ with gr.Blocks() as ui:
 
             interval_slider = gr.Slider(
                 minimum=1, maximum=16, step=1, value=8,
-                label="Time Interval"
+                label="Size of Time Spacing"
             )
 
             run_button = gr.Button("Convert")

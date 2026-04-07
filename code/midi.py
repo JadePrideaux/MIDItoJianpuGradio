@@ -45,7 +45,13 @@ def extract_notes(midi: mido.MidiFile, channel: int, offset: int, time_interval:
   return notes
 
 def wrap_value(note: str, time_space: str) -> str:
-  return "[" + note + time_space + "]"
+  '''Wraps the note and time_space values'''
+  if not time_space:
+    return "[" + note + "]"
+  if not note:
+    return "[" + time_space + "]"
+  else:
+    return "[" + note + "|" + time_space + "]"
 
 def get_time_space(time: float, time_interval: int) -> str:
   time_string = ""

@@ -64,4 +64,4 @@ class TestMIDI(unittest.TestCase):
 
   def test_channel_filtering(self):
     result = midi_to_jianpu_str(self.test_midi, 0)  # type: ignore
-    self.assertNotIn("2", result)  # note from channel 1 should not appear
+    self.assertNotIn("2", result)
