@@ -1,6 +1,7 @@
 import math
 from code.logic import calculate_offset, midi_note_to_jianpu, transpose
 from tempfile import _TemporaryFileWrapper
+from typing import Any, cast
 
 import mido
 
@@ -9,7 +10,7 @@ def load_midi_file(file: _TemporaryFileWrapper) -> mido.MidiFile:
   '''Loads a MIDI file'''
   return mido.MidiFile(file.name)
 
-def check_channel(midi: mido.MidiFile, channel: int) -> bool:
+def check_channel_exists(midi: mido.MidiFile, channel: int) -> bool:
   '''Returns true if the channel exists in the midi file'''
   return channel in get_midi_channels(midi)
 
@@ -20,7 +21,7 @@ def midi_to_jianpu_str(
   ) -> str:
   '''Get notes in jianpu notation as a string from a given channel in a MIDI file.'''
 
-  if not check_channel(midi, channel):
+  if not check_channel_exists(midi, channel):
     return f"Channel {channel} does not exist in this MIDI file."
 
   notes = extract_notes(midi, channel, offset)
@@ -33,21 +34,32 @@ def extract_notes(midi: mido.MidiFile, channel: int, offset: int) -> list[str]:
   '''Gets a list of notes from the given midi file from the selected channel with an offset.'''
   notes = []
   for message in midi:
-    # check message is in selected channel
-    if not hasattr(message, "channel") or message.channel != channel:
+    # if the message is not in the elected channel, skip it
+    if not is_correct_channel(message, channel):
       continue
     # if it in a note:
     if message.type == "note_on" and message.velocity > 0:
-      note = transpose(message.note, offset)
       beats = 1
-      value = wrap_value(str(midi_note_to_jianpu(note)), get_time_space(beats))
-      notes.append(value)
+      notes.append(get_note_string(message, offset, beats))
     # if it is a rest
     if (message.type == "note_off" or (message.type == "note_on" and message.velocity == 0)) and message.time != 0:
       beats = 1
-      value = wrap_value("", get_time_space(beats))
-      notes.append(value)
+      notes.append(get_rest_string(message, beats))
   return notes
+
+def is_correct_channel(message: mido.Message, channel: int) -> bool:
+  '''Check if the message is in the selected channel'''
+  if not hasattr(message, "channel"):
+    return False
+  return cast(Any, message).channel == channel
+
+def get_note_string(message: mido.Message, offset: int, beats: int) -> str:
+  note = transpose(getattr(message, "note"), offset)
+  value = str(midi_note_to_jianpu(note))
+  return wrap_value(value, get_time_space(beats))
+
+def get_rest_string(message: mido.Message, beats: int) -> str:
+  return wrap_value("", get_time_space(beats))
 
 def get_time_space(beats: float) -> str:
   time_string = ""
