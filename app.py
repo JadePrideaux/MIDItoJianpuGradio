@@ -19,7 +19,7 @@ def midi_file_to_jianpu_str(
         midi = load_midi_file(file)
     except:
         return f"Error processing file, make sure to upload a MIDI file.", ("", channel, offset)
-    result = midi_to_jianpu_str(midi, channel, offset, time_interval)
+    result = midi_to_jianpu_str(midi, channel, offset)
     return result, (file.name, channel, offset)
 
 def get_midi(state) -> tuple[str, str | None]:
@@ -53,7 +53,6 @@ with gr.Blocks() as ui:
             gr.Markdown("**MIDI Channel** - Select which channel to convert.")
             gr.Markdown("**Semitone Offset** - Offset the song by a semitone")
             gr.Markdown("**Octave Offset** - Offset the song by an octave")
-            gr.Markdown("**Time Spacing** - Select how long the time breaks are in the output, these are calculated by the time in seconds multiplied by this value, floored.")
             gr.Markdown("### Key:")
             gr.Markdown("[n] - note")
             gr.Markdown("[n|----] - longer note")
@@ -79,11 +78,6 @@ with gr.Blocks() as ui:
                 label="Octave Offset"
             )
 
-            interval_slider = gr.Slider(
-                minimum=1, maximum=16, step=1, value=8,
-                label="Size of Time Spacing"
-            )
-
             run_button = gr.Button("Convert")
 
         with gr.Column():
@@ -98,8 +92,7 @@ with gr.Blocks() as ui:
             midi_input,
             channel_slider,
             semitone_slider,
-            octave_slider,
-            interval_slider
+            octave_slider
         ],
         outputs=[output_text, state]
     )

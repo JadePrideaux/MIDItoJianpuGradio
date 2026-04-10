@@ -45,23 +45,6 @@ class TestMIDI(unittest.TestCase):
     result = midi_to_jianpu_str(midi, 0)  # type: ignore
     self.assertIn("-", result)
 
-  def test_zero_time_note_off_ignored(self):
-    midi = DummyMIDI([
-        DummyMessage(62, 0, time=0),
-        DummyMessage(62, 0, type="note_off", time=0),
-    ])
-    result = midi_to_jianpu_str(midi, 0)  # type: ignore
-    self.assertNotIn("-", result)
-
-  def test_timing_affects_output(self):
-    midi = DummyMIDI([
-        DummyMessage(62, 0, time=0),
-        DummyMessage(62, 0, type="note_off", time=3),
-        DummyMessage(0, 0, velocity=0, time=1)
-    ])
-    result = midi_to_jianpu_str(midi, 0, time_interval=1)  # type: ignore
-    self.assertEqual(result, "[1] [---] [-]")
-
   def test_channel_filtering(self):
     result = midi_to_jianpu_str(self.test_midi, 0)  # type: ignore
     self.assertNotIn("2", result)

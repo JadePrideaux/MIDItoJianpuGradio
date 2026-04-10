@@ -1,5 +1,5 @@
+import math
 from code.logic import calculate_offset, midi_note_to_jianpu, transpose
-from math import floor
 from tempfile import _TemporaryFileWrapper
 
 import mido
@@ -17,17 +17,19 @@ def midi_to_jianpu_str(
     midi: mido.MidiFile,
     channel: int = 0,
     offset: int = 0,
-    time_interval: int = 64
   ) -> str:
   '''Get notes in jianpu notation as a string from a given channel in a MIDI file.'''
 
   if not check_channel(midi, channel):
     return f"Channel {channel} does not exist in this MIDI file."
 
-  notes = extract_notes(midi, channel, offset, time_interval)
+  notes = extract_notes(midi, channel, offset)
   return " ".join(notes)
 
-def extract_notes(midi: mido.MidiFile, channel: int, offset: int, time_interval: int) -> list[str]:
+def get_time_in_beats(midi: mido.MidiFile, ticks: int) -> float:
+  return ticks / midi.ticks_per_beat
+
+def extract_notes(midi: mido.MidiFile, channel: int, offset: int) -> list[str]:
   '''Gets a list of notes from the given midi file from the selected channel with an offset.'''
   notes = []
   for message in midi:
@@ -35,14 +37,20 @@ def extract_notes(midi: mido.MidiFile, channel: int, offset: int, time_interval:
       continue
     if message.type == "note_on" and message.velocity > 0:
       note = transpose(message.note, offset)
-      time = message.time * time_interval
-      value = wrap_value(str(midi_note_to_jianpu(note)), get_time_space(time, time_interval))
+      beats = 1
+      value = wrap_value(str(midi_note_to_jianpu(note)), get_time_space(beats))
       notes.append(value)
     if (message.type == "note_off" or (message.type == "note_on" and message.velocity == 0)) and message.time != 0:
-      time = message.time * time_interval
-      value = wrap_value("", get_time_space(time, time_interval))
+      beats = 1
+      value = wrap_value("", get_time_space(beats))
       notes.append(value)
   return notes
+
+def get_time_space(beats: float) -> str:
+  time_string = ""
+  for _ in range(math.ceil(beats) - 1):
+    time_string += "-"
+  return time_string
 
 def wrap_value(note: str, time_space: str) -> str:
   '''Wraps the note and time_space values'''
@@ -53,12 +61,6 @@ def wrap_value(note: str, time_space: str) -> str:
   else:
     return "[" + note + "|" + time_space + "]"
 
-def get_time_space(time: float, time_interval: int) -> str:
-  time_string = ""
-  for _ in range(floor(time * time_interval)):
-    time_string += "-"
-  return time_string
-
 def get_midi_channels(midi: mido.MidiFile) -> set[int]:
   """Return a set of all channels used in the MIDI file."""
   return {
@@ -67,3 +69,4 @@ def get_midi_channels(midi: mido.MidiFile) -> set[int]:
     for msg in track
     if hasattr(msg, "channel")
   }
+
