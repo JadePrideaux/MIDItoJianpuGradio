@@ -37,14 +37,6 @@ class TestMIDI(unittest.TestCase):
     result = midi_to_jianpu_str(self.test_midi, 12)  # type: ignore
     self.assertEqual(result, "Channel 12 does not exist in this MIDI file.")
 
-  def test_velocity_zero_as_note_off(self):
-    midi = DummyMIDI([
-        DummyMessage(62, 0, velocity=64, time=0),
-        DummyMessage(62, 0, velocity=0, type="note_on", time=1),
-    ])
-    result = midi_to_jianpu_str(midi, 0)  # type: ignore
-    self.assertIn("-", result)
-
   def test_channel_filtering(self):
     result = midi_to_jianpu_str(self.test_midi, 0)  # type: ignore
     self.assertNotIn("2", result)

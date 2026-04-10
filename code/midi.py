@@ -33,13 +33,16 @@ def extract_notes(midi: mido.MidiFile, channel: int, offset: int) -> list[str]:
   '''Gets a list of notes from the given midi file from the selected channel with an offset.'''
   notes = []
   for message in midi:
+    # check message is in selected channel
     if not hasattr(message, "channel") or message.channel != channel:
       continue
+    # if it in a note:
     if message.type == "note_on" and message.velocity > 0:
       note = transpose(message.note, offset)
       beats = 1
       value = wrap_value(str(midi_note_to_jianpu(note)), get_time_space(beats))
       notes.append(value)
+    # if it is a rest
     if (message.type == "note_off" or (message.type == "note_on" and message.velocity == 0)) and message.time != 0:
       beats = 1
       value = wrap_value("", get_time_space(beats))
@@ -69,4 +72,3 @@ def get_midi_channels(midi: mido.MidiFile) -> set[int]:
     for msg in track
     if hasattr(msg, "channel")
   }
-
