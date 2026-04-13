@@ -37,15 +37,21 @@ def extract_notes(midi: mido.MidiFile, channel: int, offset: int) -> list[str]:
     # if the message is not in the elected channel, skip it
     if not is_correct_channel(message, channel):
       continue
-    # if it in a note:
-    if message.type == "note_on" and message.velocity > 0:
+    # if it is a note:
+    if is_note(message):
       beats = 1
       notes.append(get_note_string(message, offset, beats))
     # if it is a rest
-    if (message.type == "note_off" or (message.type == "note_on" and message.velocity == 0)) and message.time != 0:
+    elif is_rest(message):
       beats = 1
       notes.append(get_rest_string(message, beats))
   return notes
+
+def is_note(message: mido.Message) -> bool:
+  return getattr(message, "type") == "note_on" and getattr(message, "velocity") > 0
+    
+def is_rest(message: mido.Message) -> bool:
+  return getattr(message, "type") == "note_off" or (getattr(message, "type") == "note_on" and getattr(message, "velocity") == 0)
 
 def is_correct_channel(message: mido.Message, channel: int) -> bool:
   '''Check if the message is in the selected channel'''
