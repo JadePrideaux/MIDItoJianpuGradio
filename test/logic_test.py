@@ -1,5 +1,5 @@
 import unittest
-from code.logic import calculate_offset, midi_note_to_jianpu, transpose
+from code.transposition import calculate_offset, midi_note_to_jianpu, transpose
 
 
 class TestLogic(unittest.TestCase):

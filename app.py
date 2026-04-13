@@ -1,6 +1,7 @@
-from code.logic import calculate_offset
-from code.midi import load_midi_file, midi_to_jianpu_str
-from code.new_midi import get_new_midi
+from code.midi_loading import load_midi_file
+from code.midi_to_midi import get_new_midi
+from code.midi_to_string import midi_to_jianpu_str
+from code.transposition import calculate_offset
 from tempfile import _TemporaryFileWrapper
 
 import gradio as gr
@@ -10,8 +11,7 @@ import mido
 def midi_file_to_jianpu_str(
         file: _TemporaryFileWrapper,
         channel: int, semitone_offset: int,
-        octave_offset: int,
-        time_interval: int
+        octave_offset: int
     ) -> tuple[str, tuple[str, int, int]]:
     '''Given a midi file, return the notes in jianpu notation'''
     offset = calculate_offset(semitone_offset, octave_offset)

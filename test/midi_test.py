@@ -1,5 +1,6 @@
 import unittest
-from code.midi import get_midi_channels, midi_to_jianpu_str
+from code.midi_channels import get_midi_channels
+from code.midi_to_string import midi_to_jianpu_str
 
 
 class DummyMessage:

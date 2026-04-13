@@ -1,6 +1,6 @@
 import os
 import unittest
-from code.new_midi import generate_new_midi, get_new_midi
+from code.midi_to_midi import generate_new_midi, get_new_midi
 
 import mido
 
