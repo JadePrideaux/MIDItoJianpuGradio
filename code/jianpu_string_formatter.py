@@ -1,5 +1,5 @@
 import math
-from code.transposition import midi_note_to_jianpu, transpose
+from code.note_conversion import midi_note_to_jianpu, transpose
 
 import mido
 
@@ -9,7 +9,7 @@ def get_note_string(message: mido.Message, offset: int, beats: int) -> str:
   value = str(midi_note_to_jianpu(note))
   return wrap_value(value, get_time_space(beats))
 
-def get_rest_string(message: mido.Message, beats: int) -> str:
+def get_rest_string(beats: int) -> str:
   return wrap_value("", get_time_space(beats))
 
 def get_time_space(beats: float) -> str:

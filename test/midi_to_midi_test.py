@@ -5,7 +5,7 @@ from code.midi_to_midi import generate_new_midi, get_new_midi
 import mido
 
 
-class TestMIDI(unittest.TestCase):
+class MidiToMidiTest(unittest.TestCase):
   def setUp(self):
       # Create a simple MIDI file with one track and a few messages
       self.midi = mido.MidiFile()

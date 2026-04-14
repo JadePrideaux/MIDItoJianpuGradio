@@ -1,8 +1,9 @@
 import unittest
-from code.transposition import calculate_offset, midi_note_to_jianpu, transpose
+from code.note_conversion import (calculate_offset, midi_note_to_jianpu,
+                                  transpose)
 
 
-class TestLogic(unittest.TestCase):
+class NoteConversionTest(unittest.TestCase):
 
   def test_tonic(self):
     '''Test that the tonic is mapped correctly'''

@@ -1,7 +1,7 @@
 from code.midi_loading import load_midi_file
 from code.midi_to_midi import get_new_midi
 from code.midi_to_string import midi_to_jianpu_str
-from code.transposition import calculate_offset
+from code.note_conversion import calculate_offset
 from tempfile import _TemporaryFileWrapper
 
 import gradio as gr
