@@ -7,16 +7,16 @@ import mido
 
 class MidiToMidiTest(unittest.TestCase):
   def setUp(self):
-      # Create a simple MIDI file with one track and a few messages
-      self.midi = mido.MidiFile()
-      track = mido.MidiTrack()
-      self.midi.tracks.append(track)
+    # Create a simple MIDI file with one track and a few messages
+    self.midi = mido.MidiFile()
+    track = mido.MidiTrack()
+    self.midi.tracks.append(track)
 
-      # Add messages on two channels
-      track.append(mido.Message('note_on', note=60, velocity=64, time=0, channel=0))
-      track.append(mido.Message('note_off', note=60, velocity=64, time=10, channel=0))
-      track.append(mido.Message('note_on', note=62, velocity=64, time=0, channel=1))
-      track.append(mido.Message('note_off', note=62, velocity=64, time=10, channel=1))
+    # Add messages on two channels
+    track.append(mido.Message('note_on', note=60, velocity=64, time=0, channel=0))
+    track.append(mido.Message('note_off', note=60, velocity=64, time=10, channel=0))
+    track.append(mido.Message('note_on', note=62, velocity=64, time=0, channel=1))
+    track.append(mido.Message('note_off', note=62, velocity=64, time=10, channel=1))
 
   def test_generate_new_midi_filters_channel(self):
     new_midi = generate_new_midi(self.midi, channel=0, offset=0)
