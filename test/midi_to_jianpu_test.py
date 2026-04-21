@@ -10,13 +10,13 @@ class MidiToJianpuTest(unittest.TestCase):
 
   def test_midi_to_jianpu_str(self):
     # using a fake midi file so types dont need to match
-    self.assertEqual(midi_to_jianpu_str(self.test_midi, 0), "[1] [3]") # type: ignore
-    self.assertEqual(midi_to_jianpu_str(self.test_midi, 1), "[2]") # type: ignore
+    self.assertEqual(midi_to_jianpu_str(self.test_midi, 0), "[1] [3]")
+    self.assertEqual(midi_to_jianpu_str(self.test_midi, 1), "[2]")
 
   def test_invalid_channel(self):
-    result = midi_to_jianpu_str(self.test_midi, 12)  # type: ignore
+    result = midi_to_jianpu_str(self.test_midi, 12)
     self.assertEqual(result, "Channel 12 does not exist in this MIDI file.")
 
   def test_channel_filtering(self):
-    result = midi_to_jianpu_str(self.test_midi, 0)  # type: ignore
+    result = midi_to_jianpu_str(self.test_midi, 0)
     self.assertNotIn("2", result)

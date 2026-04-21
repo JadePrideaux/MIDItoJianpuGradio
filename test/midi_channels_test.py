@@ -9,4 +9,4 @@ class MidiChannelsTest(unittest.TestCase):
     self.test_midi = make_dummy_midi()
 
   def test_get_midi_channels(self):
-    self.assertEqual(get_midi_channels(self.test_midi), {0, 1})  # type: ignore
+    self.assertEqual(get_midi_channels(self.test_midi), {0, 1})
