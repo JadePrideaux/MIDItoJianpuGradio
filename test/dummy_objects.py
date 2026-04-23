@@ -35,3 +35,18 @@ def make_dummy_midi() -> MidiFile:
     DummyMessage(64, 1),
     DummyMessage(66, 0)
   ]])
+
+def make_dummy_message(
+    note=62,
+    channel=0,
+    velocity=64,
+    type="note_on",
+    time: int = 10
+    ) -> MidiMessage:
+  return DummyMessage(
+    note = note,
+    channel = channel,
+    velocity=velocity,
+    type=type,
+    time=time
+  )

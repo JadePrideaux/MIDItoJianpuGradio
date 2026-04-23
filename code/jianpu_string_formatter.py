@@ -2,8 +2,6 @@ import math
 from code.note_conversion import midi_note_to_jianpu, transpose
 from code.protocols.protocols import MidiMessage
 
-import mido
-
 
 def get_note_string(message: MidiMessage, offset: int, beats: int) -> str:
   note = transpose(getattr(message, "note"), offset)
